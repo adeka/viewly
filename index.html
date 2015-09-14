@@ -1,8 +1,81 @@
+<!doctype html>
 <html>
 <head>
-  <link rel="stylesheet" type="text/css" href="mystyle.css">
-  <script src="main.js"></script>
+  <meta charset="utf-8">
+  <title>viewly.io</title>
+  <link rel="stylesheet" href="css/style.css" />
+
 </head>
 <body>
+
+<!--
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.js"></script>
+-->
+  <script src="test/libs/jquery.js"></script>
+  <script src="dist/jquery.panzoom.js"></script>
+  <script src="test/libs/jquery.mousewheel.js"></script>
+
+  <script src="bower_components/get-style-property/get-style-property.js"></script>
+  <script src="bower_components/get-size/get-size.js"></script>
+  <script src="bower_components/matches-selector/matches-selector.js"></script>
+  <script src="bower_components/eventEmitter/EventEmitter.js"></script>
+  <script src="bower_components/eventie/eventie.js"></script>
+
+
+
+<!--
+
+
+
+
+-->
+<script src="bower_components/doc-ready/doc-ready.js"></script>
+<script src="bower_components/classie/classie.js"></script>
+<script src="bower_components/fizzy-ui-utils/utils.js"></script>
+<script src="bower_components/outlayer/item.js"></script>
+<script src="bower_components/outlayer/outlayer.js"></script>
+
+  <script src="js/rect.js"></script>
+  <script src="js/packer.js"></script>
+  <script src="js/item.js"></script>
+  <script src="js/packery.js"></script>
+  <script src="js/main.js"></script>
+
+
+  <!--
+  <script src="js/pinterest_sdk.js"></script>
+  -->
+
+  <section id="focal">
+    <div class="parent">
+      <div class="panzoom">
+        <div id="center-out1" class="container"></div>
+        <!--
+        <img src="http://blog.millermedeiros.com/wp-content/uploads/2010/04/awesome_tiger.svg" width="900" height="900">
+      -->
+      </div>
+    </div>
+    <script>
+      (function() {
+        var $section = $('#focal');
+        var $panzoom = $section.find('.panzoom').panzoom();
+        $panzoom.parent().on('mousewheel.focal', function( e ) {
+          e.preventDefault();
+          var delta = e.delta || e.originalEvent.wheelDelta;
+          var zoomOut = delta ? delta < 0 : e.originalEvent.deltaY > 0;
+          $panzoom.panzoom('zoom', zoomOut, {
+            increment: 0.1,
+            animate: false,
+            focal: e
+          });
+        });
+      })();
+    </script>
+  </section>
+
+
+
+
+
 </body>
 </html>
