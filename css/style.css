@@ -17,11 +17,15 @@ body {
   font-family: sans-serif;
 }
 
+
 .container {
   margin: 0 auto;
-  background: #EEE;
+  background: #111;
   width: 20000px !important;
   height: 20000px !important;
+  position: relative;
+  left: -10000px;
+  top: -10000px;
 }
 
 .item {
@@ -31,6 +35,11 @@ body {
   border: 1px solid;
   background: #ACE;
   */
+  padding:15px;
+}
+
+.item:hover{
+  background-color:rgba(255,255,255,.1);
 }
 
 .item.w2 { width:  100px; }
