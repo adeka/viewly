@@ -28,6 +28,21 @@ body {
   top: -10000px;
 }
 
+
+      #map {
+        height: 100%;
+        width: 100%;
+        left: 0;
+        position: absolute;
+        top: 0;
+        z-index: 2;
+      }
+
+      .item {
+        z-index: 3;
+        width: 0.5%;
+      }
+
 .item {
   /*float: left;
   width: 50px;
@@ -35,7 +50,7 @@ body {
   border: 1px solid;
   background: #ACE;
   */
-  padding:15px;
+  padding:1px;
 }
 
 .item:hover{

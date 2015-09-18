@@ -9,8 +9,8 @@ window.onload = function() {
        gutter: 0,
       itemSelector: '.item',
       centered: {
-       x: 10000,
-       y: 10000
+       x: 10600,
+       y: 10300
       }
     });
 
@@ -103,6 +103,8 @@ window.onload = function() {
         dataType: "text",
         success: function(data) {processData(data);}
      });
+
+
 
 
     function processData(allText) {
