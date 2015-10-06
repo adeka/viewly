@@ -42,6 +42,7 @@
   <script src="js/main.js"></script>
 
 
+
   <!--
   <script src="js/pinterest_sdk.js"></script>
   -->
@@ -54,6 +55,15 @@
         <img src="http://blog.millermedeiros.com/wp-content/uploads/2010/04/awesome_tiger.svg" width="900" height="900">
       -->
       </div>
+      <a href="https://api.pinterest.com/oauth/?response_type=code&redirect_uri=https://localhost/viewly/&client_id=4794481293328913447&scope=read_public,write_public&state=768uyFys" style="color: white; z-index: 999999;
+    position: absolute;
+    top: 0;
+    right: 0;">Pinterest Login</a>
+
+    <div class="name" style="color: white; z-index: 999999;
+    position: absolute;
+    top: 30px;
+    right: 0;">name</div>
     </div>
     <script>
       (function() {
@@ -64,8 +74,10 @@
           var delta = e.delta || e.originalEvent.wheelDelta;
           var zoomOut = delta ? delta < 0 : e.originalEvent.deltaY > 0;
           $panzoom.panzoom('zoom', zoomOut, {
-            increment: 0.2,
+            increment: 0.05,
             animate: false,
+            maxScale: 5,
+            minScale: 0.1,
             focal: e
           });
         });

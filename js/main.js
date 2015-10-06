@@ -36,6 +36,80 @@ window.onload = function() {
 
     });
 
+
+    var item = document.createElement('img');
+    item.className = 'item';
+    var url = 'http://assets.worldwildlife.org/photos/946/images/story_full_width/forests-why-matter_63516847.jpg?1345534028';
+    item.src = url;
+    container.appendChild( item );
+    pckry.appended( item );
+
+
+      var access_token = 'xxx';
+      console.log('ready');
+
+      var getUrlParameter = function getUrlParameter(sParam) {
+          var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+              sURLVariables = sPageURL.split('&'),
+              sParameterName,
+              i;
+
+          for (i = 0; i < sURLVariables.length; i++) {
+              sParameterName = sURLVariables[i].split('=');
+
+              if (sParameterName[0] === sParam) {
+                  return sParameterName[1] === undefined ? true : sParameterName[1];
+              }
+          }
+      };
+
+      var code = getUrlParameter('code');
+
+      function getToken(data) {
+        access_token = data.access_token;
+      }
+
+      $.post("https://api.pinterest.com/v1/oauth/token", { grant_type : 'authorization_code', client_id : '4794481293328913447', client_secret : 'e7b4b8eeccd9e8f247d1c4cce90587a49c53f6333f7290a9ad4c5f17510064d1', code : code })
+        .done(function( data ) {
+       //   console.log( data.access_token );
+          access_token = data.access_token;
+
+          $.get("https://api.pinterest.com/v1/me/?access_token=" + access_token, function(data) {
+            console.log('real data');
+            console.log(data);
+            console.log(data.data.first_name);
+            $("div.name").html(data.data.first_name);
+          });
+
+
+          $.get("https://api.pinterest.com/v1/me/pins/?access_token=" + access_token + "&fields=id,creator,image[original,small]", function(data) {
+            console.log('real data');
+            console.log(data);
+
+            for (var i = 0; i < data.data.length; i++) {
+              var pin_url = data.data[i].image.original.url;
+              var item = document.createElement('img');
+              item.className = 'item';
+              var url = pin_url;
+              item.src = url;
+              container.appendChild( item );
+              pckry.appended( item );
+
+            }
+
+       //     console.log(data.data[0].image.original.url);
+        //    var pin_url = data.data[0].image.original.url;
+
+
+
+
+          });
+
+
+        });
+
+
+
     function appendItem(topic) {
       (function() {
         var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
@@ -45,6 +119,7 @@ window.onload = function() {
           format: "json",
         })
           .done(function( data ) {
+            console.log(data);
             $.each( data.items, function( i, photo ) {
               //var item = $( "<img src="+item.media.m+"></img>");
               var item = document.createElement('img');
@@ -96,15 +171,20 @@ window.onload = function() {
     setTimeout(appendItem("meteorites"), 0);
     setTimeout(appendItem("asteroid"), 0);
     */
-
+/*
     $.ajax({
         type: "GET",
-        url: "js/nouns.txt",
+        url: "/js/nouns.txt",
         dataType: "text",
         success: function(data) {processData(data);}
      });
 
-
+processData('flower');
+processData('sunset');
+processData('waterfall');
+processData('ocean');
+processData('rose');
+*/
     function processData(allText) {
         var allTextLines = allText.split(/\r\n|\n/);
         var nouns = allTextLines[0].split(',');

@@ -8,7 +8,8 @@
     "classie": "1.x",
     "get-style-property": "1.x",
     "get-size": "1.2.x",
-    "outlayer": "~1.4.1"
+    "outlayer": "~1.4.1",
+    "packery": "~1.4.3"
   },
   "devDependencies": {
     "draggabilly": "1.x",
