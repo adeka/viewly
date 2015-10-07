@@ -29,20 +29,22 @@ window.onload = function() {
       var x = $(elem).context.style.left;
       var y = $(elem).context.style.top;
       console.log();
-      pckry.fit( elem, x, y )
+   //   pckry.fit( elem, x, y )
       //pckry.layoutItems( elem, true );
       //pckry.remove( elem );
-       pckry.layout();
+
 
     });
 
 
-    var item = document.createElement('img');
-    item.className = 'item';
-    var url = 'http://assets.worldwildlife.org/photos/946/images/story_full_width/forests-why-matter_63516847.jpg?1345534028';
-    item.src = url;
-    container.appendChild( item );
-    pckry.appended( item );
+    $('body').keyup(function(e){
+       if(e.keyCode == 8){
+
+       }
+       if(e.keyCode == 32){
+          pckry.layout();
+       }
+    });
 
 
       var access_token = 'xxx';
@@ -69,6 +71,59 @@ window.onload = function() {
         access_token = data.access_token;
       }
 
+      function getImages(url, n) {
+        if ((url != "" || url != null) && n < 3) {
+          $.get(url, function(data) {
+            console.log(data);
+
+            for (var i = 0; i < data.data.length; i++) {
+              var pin_url = data.data[i].image.original.url;
+              var item = document.createElement('img');
+              item.className = 'item';
+              var url = pin_url;
+              item.src = url;
+              item.style.background = data.data[i].color;
+              container.appendChild( item );
+              pckry.appended( item );
+
+            }
+            n++;
+            getImages(data.page.next, n);
+
+
+          });
+        } else {
+          pckry.layout();
+        }
+      }
+
+      function getBackgrounds(url, n) {
+        if ((url != "" || url != null) && n < 3) {
+          $.get(url, function(data) {
+            console.log(data);
+
+            for (var i = 0; i < data.data.length; i++) {
+              var item = document.createElement('div');
+              item.className = 'item';
+              item.style.background = data.data[i].color;
+              item.style.width = data.data[i].image.original.width + 'px';
+              item.style.height = data.data[i].image.original.height + 'px';
+              container.appendChild( item );
+              pckry.appended( item );
+
+            }
+            n++;
+            getBackgrounds(data.page.next, n);
+
+
+          });
+        } else {
+          pckry.layout();
+        }
+      }
+
+
+
       $.post("https://api.pinterest.com/v1/oauth/token", { grant_type : 'authorization_code', client_id : '4794481293328913447', client_secret : 'e7b4b8eeccd9e8f247d1c4cce90587a49c53f6333f7290a9ad4c5f17510064d1', code : code })
         .done(function( data ) {
        //   console.log( data.access_token );
@@ -82,6 +137,11 @@ window.onload = function() {
           });
 
 
+          var initial_url = "https://api.pinterest.com/v1/me/pins/?access_token=" + access_token + "&fields=id,creator,color,image[original,medium,large,small]";
+       //   getImages(initial_url, 0);
+          getBackgrounds(initial_url, 0);
+
+/*
           $.get("https://api.pinterest.com/v1/me/pins/?access_token=" + access_token + "&fields=id,creator,image[original,small]", function(data) {
             console.log('real data');
             console.log(data);
@@ -96,16 +156,20 @@ window.onload = function() {
               pckry.appended( item );
 
             }
+            var next_url = data.page.next;
 
-       //     console.log(data.data[0].image.original.url);
-        //    var pin_url = data.data[0].image.original.url;
+
+
+
+
+
 
 
 
 
           });
 
-
+*/
         });
 
 
