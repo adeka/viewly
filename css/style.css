@@ -37,27 +37,3 @@ body {
   */
   padding:15px;
 }
-
-.item:hover{
-  background-color:rgba(255,255,255,.1);
-}
-
-.item.w2 { width:  100px; }
-.item.h2 { height: 100px; }
-.item.w4 { width:  200px; }
-.item.h4 { height: 200px; }
-
-.fluid {
-}
-
-.has-padding {
-  padding: 10px 20px 30px 40px;
-}
-
-/* dragging */
-.is-dragging,
-.is-positioning-post-drag,
-.ui-draggable-dragging {
-  z-index: 10;
-  background: orange;
-}
