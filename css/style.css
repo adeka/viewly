@@ -15,6 +15,7 @@ body{
 
 body {
   font-family: sans-serif;
+  background: #111;
 }
 
 
@@ -22,10 +23,13 @@ body {
   margin: 0 auto;
   background: #111;
   position: relative;
-  width: 7000px !important;
-  height: 7000px !important;
-  left: -3500px;
-  top: -3500px;
+
+}
+
+#loginButton {
+  position: fixed;
+  top: 0;
+  right: 0;
 }
 
 .panzoom {
@@ -33,8 +37,4 @@ body {
 }
 .item {
   float: left;
-
-  background: #0D8;
-  border: 2px solid #333;
-  border-color: hsla(0, 0%, 0%, 0.7);
 }
