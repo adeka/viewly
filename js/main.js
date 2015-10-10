@@ -1,6 +1,7 @@
+var grid;
+
 window.onload = function() {
-  createView(7);
-  createRandomPins(700);
+  createRandomPins(400);
   initIsotope();
   initPanZoom();
 }
@@ -12,17 +13,18 @@ createView = function(scale){
   view.width(w);
   view.height(h);
   view.css("left", w*-.5);
-  view.css("top", h*-.25);
+  view.css("top", h*-.5);
 }
 
 initIsotope = function () {
-  $('.container').isotope({
+    grid = $('.container').isotope({
       layoutMode: 'packery',
       itemSelector: '.item',
-      percentPosition: true,
       packery: {
+        containerStyle: null
   }
 });
+
 }
 
 initPanZoom = function() {
@@ -35,6 +37,8 @@ initPanZoom = function() {
     $panzoom.panzoom('zoom', zoomOut, {
       increment: 0.2,
       animate: false,
+      minScale: 0.1,
+      maxScale: 5,
       focal: e
     });
   });

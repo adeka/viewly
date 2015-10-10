@@ -21,13 +21,16 @@ body {
 .container {
   margin: 0 auto;
   background: #111;
-  width: 5000px;
-  height:5000px;
   position: relative;
+  width: 7000px !important;
+  height: 7000px !important;
   left: -3500px;
   top: -3500px;
 }
 
+.panzoom {
+
+}
 .item {
   float: left;
 
