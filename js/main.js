@@ -77,7 +77,8 @@ addPins = function(pins) {
       var url = pins[i].image.original.url;
       total += pins[i].image.original.height;
       sum += pins[i].image.original.height * pins[i].image.original.width;
-      var div = $('<img class="item"></img>');
+      var board = pins[i].board.id;
+      var div = $('<img class="item ' + board + '"></img>');
       div[0].src = url;
 
       $('.container').append(div);
@@ -117,6 +118,7 @@ initPinterestSDK = function() {
           // session has been set
           console.log('session set');
           getPins(session);
+          getBoards(session);
         }
       })
 
@@ -164,12 +166,32 @@ pinterestLoginSuccess = function() {
 
 }
 
+getBoards = function(session) {
+  var boardArray = [];
+  PDK.me('boards', {
+    access_token: session.accessToken, // Change this
+  },function(response) {
+    if (!response || response.error) {
+      alert('Error occurred');
+    } else {
+      var boards = response.data;
+      console.log(boards);
+
+    var s = $("#boardSelect");
+    for(var board in boards) {
+        $("<option />", {value: board.id, text: data[board.name]}).appendTo(s);
+    }
+
+    }
+  });
+}
+
 getPins = function(session) {
 
   PDK.me('pins', {
       access_token: session.accessToken, // Change this
       limit: 100,
-      fields: 'id,creator,color,image[original,medium,large,small]'
+      fields: 'id,creator,color,board,image[original,medium,large,small]'
     }, function(response) {
     if (!response || response.error) {
       alert('Error occurred');
@@ -180,6 +202,40 @@ getPins = function(session) {
     }
 
   });
+
+/*
+  var pins = [];
+  var counter = 0;
+  PDK.request('/me/pins/', {
+    access_token: session.accessToken,
+    fields: 'id,creator,color,board,image[original,medium,large,small]'
+  }, function (response) {
+
+    if (!response || response.error) {
+      alert('Error occurred');
+    } else {
+      pins = pins.concat(response.data);
+      console.log(pins);
+      counter += 1;
+
+      if (response.hasNext && counter < 5) {
+        response.next(); // this will recursively go to this same callback
+      }
+
+      if (!response.hasNext || counter >= 5) {
+
+        addPins(pins);
+        console.log(pins);
+        console.log('done');
+
+      }
+
+    }
+
+  });
+*/
+
+
 
 }
 
