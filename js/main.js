@@ -14,6 +14,14 @@ window.onload = function() {
       }
     });
 
+  $center-out1.find('.item').each( function( i, itemElem ) {
+    // make element draggable with Draggabilly
+    var draggie = new Draggabilly( itemElem );
+    // bind Draggabilly events to Packery
+    $container.packery( 'bindDraggabillyEvents', draggie );
+  });
+
+
     console.log();
 
     eventie.bind( container, 'click', function(){
@@ -72,7 +80,7 @@ window.onload = function() {
       }
 
       function getImages(url, n) {
-        if ((url != "" || url != null) && n < 3) {
+        if ((url != "" || url != null) && n < 4) {
           $.get(url, function(data) {
             console.log(data);
 
@@ -98,7 +106,7 @@ window.onload = function() {
       }
 
       function getBackgrounds(url, n) {
-        if ((url != "" || url != null) && n < 3) {
+        if ((url != "" || url != null) && n < 4) {
           $.get(url, function(data) {
             console.log(data);
 
@@ -139,7 +147,7 @@ window.onload = function() {
 
           var initial_url = "https://api.pinterest.com/v1/me/pins/?access_token=" + access_token + "&fields=id,creator,color,image[original,medium,large,small]";
        //   getImages(initial_url, 0);
-          getBackgrounds(initial_url, 0);
+          getImages(initial_url, 0);
 
 /*
           $.get("https://api.pinterest.com/v1/me/pins/?access_token=" + access_token + "&fields=id,creator,image[original,small]", function(data) {
