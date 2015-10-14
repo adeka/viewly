@@ -5,12 +5,17 @@ window.onload = function() {
 //  initIsotope();
 //  initPanZoom();
   initPinterestSDK();
+  initPanZoom();
+
+
 }
 
 createView = function(w,h){
   var view = $('.container')
   view.width(w);
   view.height(h);
+  view.css('width', w + 'px !important');
+  view.css('height', h + 'px !important');
   //view.css("left", w*-.5);
   //view.css("top", w*-.5);
 }
@@ -19,10 +24,21 @@ initIsotope = function () {
     grid = $('.container').isotope({
       layoutMode: 'packery',
       itemSelector: '.item',
-      packery: {
 
-  }
-});
+    });
+/*
+    var imgLoad = imagesLoaded( grid );
+
+    imgLoad.on( 'progress', function() {
+      grid.isotope('layout');
+    });
+*/
+
+    grid.imagesLoaded().progress( function() {
+      grid.isotope('layout');
+    });
+
+
 
 }
 
@@ -34,7 +50,7 @@ initPanZoom = function() {
     var delta = e.delta || e.originalEvent.wheelDelta;
     var zoomOut = delta ? delta < 0 : e.originalEvent.deltaY > 0;
     $panzoom.panzoom('zoom', zoomOut, {
-      increment: 0.1,
+      increment: 0.05,
       animate: false,
       minScale: 0.07,
       maxScale: 5,
@@ -53,24 +69,34 @@ createRandomPins = function(n) {
 }
 
 addPins = function(pins) {
+
   var total =0;
   var sum = 0;
   for (var i=0; i<pins.length; i++) {
-    var url = pins[i].image.original.url;
-    total += pins[i].image.original.height;
-    sum += pins[i].image.original.height * pins[i].image.original.width;
-    var div = $('<img class="item"></img>');
-    div[0].src = url;
-    $('.container').append(div);
+    if(pins[i].image.original.height < 1000) {
+      var url = pins[i].image.original.url;
+      total += pins[i].image.original.height;
+      sum += pins[i].image.original.height * pins[i].image.original.width;
+      var div = $('<img class="item"></img>');
+      div[0].src = url;
+
+      $('.container').append(div);
+    }
   }
 
-  initIsotope();
+
   //createView(total/Math.sqrt(pins.length));
-  //createView(1.33*Math.sqrt(sum));
-  createView(18000,2000);
-  console.log(total);
-  grid.isotope("layout");
-  initPanZoom();
+  //createView(3000,1.5*Math.sqrt(sum));
+
+  initIsotope();
+//  createView(5000,5000);
+  createView(1.33*Math.sqrt(sum),1.33*Math.sqrt(sum));
+
+
+
+//  grid.isotope("layout");
+//  grid.isotope('shuffle');
+//  initPanZoom();
 
 }
 
@@ -135,6 +161,7 @@ pinterestLoginSuccess = function() {
     localStorage.setItem('session', JSON.stringify(session));
   }
   getPins(session);
+
 }
 
 getPins = function(session) {
@@ -151,6 +178,12 @@ getPins = function(session) {
       addPins(pins);
       console.log(pins);
     }
+
   });
 
+}
+
+shuffle = function() {
+  grid.isotope('shuffle');
+  initPanZoom();
 }
