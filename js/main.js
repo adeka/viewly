@@ -6,8 +6,19 @@ window.onload = function() {
 //  initPanZoom();
   initPinterestSDK();
   initPanZoom();
+  boardLinks();
 
 
+}
+
+boardLinks = function() {
+  $('#boardSelect').on('change', function() {
+    var url = '?board=' + $(this).val();
+    if (url) {
+      window.location = url;
+    }
+    return false;
+  });
 }
 
 createView = function(w,h){
@@ -117,8 +128,20 @@ initPinterestSDK = function() {
         } else {
           // session has been set
           console.log('session set');
-          getPins(session);
+          board_param = getUrlParameter('board');
+          console.log(board_param);
+
+          if (!board_param) {
+            getPins(session);
+          }
+          else {
+            getBoard(session, board_param);
+
+          }
+
+
           getBoards(session);
+         // getBoard(session, '494059090310629393');
         }
       })
 
@@ -173,16 +196,34 @@ getBoards = function(session) {
   },function(response) {
     if (!response || response.error) {
       alert('Error occurred');
-    } else {
+    }
+    else {
       var boards = response.data;
-      console.log(boards);
+      $.each(boards, function(i) {
+        $('#boardSelect')
+          .append($("<option></option>")
+          .attr('value', String(boards[i].id))
+          .text(String(boards[i].name)));
+      });
 
-    var s = $("#boardSelect");
-    for(var board in boards) {
-        $("<option />", {value: board.id, text: data[board.name]}).appendTo(s);
+    }
+  });
+}
+
+getBoard = function(session, board_id) {
+  PDK.request('/boards/' + board_id + '/pins/', {
+      access_token: session.accessToken, // Change this
+      limit: 100,
+      fields: 'id,creator,color,board,image[original,medium,large,small]'
+    }, function(response) {
+    if (!response || response.error) {
+      alert('Error occurred');
+    } else {
+      var pins = response.data;
+      addPins(pins);
+      console.log(pins);
     }
 
-    }
   });
 }
 
@@ -203,7 +244,8 @@ getPins = function(session) {
 
   });
 
-/*
+/* Pagination
+
   var pins = [];
   var counter = 0;
   PDK.request('/me/pins/', {
@@ -243,3 +285,18 @@ shuffle = function() {
   grid.isotope('shuffle');
   initPanZoom();
 }
+
+getUrlParameter = function(sParam) {
+    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : sParameterName[1];
+        }
+    }
+};
