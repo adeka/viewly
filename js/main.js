@@ -13,14 +13,14 @@ window.onload = function() {
        y: 10000
       }
     });
-
+/*
   $center-out1.find('.item').each( function( i, itemElem ) {
     // make element draggable with Draggabilly
     var draggie = new Draggabilly( itemElem );
     // bind Draggabilly events to Packery
     $container.packery( 'bindDraggabillyEvents', draggie );
   });
-
+*/
 
     console.log();
 
