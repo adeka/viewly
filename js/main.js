@@ -9,8 +9,22 @@ window.onload = function() {
   boardLinks();
   centerFrame();
 
+  setTimeout(function() {
+
+        $('.panzoom').panzoom('zoom', 0.5, {
+          focal: {
+            clientX: -100,
+            clientY: -100
+          }
+        });
+
+  }, 3000);
+
+
 
 }
+
+
 
 
 
@@ -35,21 +49,24 @@ createView = function(w,h){
 }
 
 initIsotope = function () {
+  /*
     grid = $('.container').isotope({
       layoutMode: 'packery',
       itemSelector: '.item',
 
     });
-/*
-    var imgLoad = imagesLoaded( grid );
 
-    imgLoad.on( 'progress', function() {
-      grid.isotope('layout');
-    });
-*/
 
     grid.imagesLoaded().progress( function() {
       grid.isotope('layout');
+    });
+*/
+    grid = $('.container').imagesLoaded( function() {
+      grid.isotope({
+        layoutMode: 'packery',
+        itemSelector: '.item',
+
+      });
     });
 
 
@@ -81,7 +98,7 @@ $body.on('mousedown', function (evt) {
       $('.panzoom').panzoom('pan', x, y );
    //   $('.panzoom').panzoom('zoom');
 
-      var scale = 0.9 * $( window ).height() / height;
+      var scale = 1 * $( window ).height() / height;
 
       $('.panzoom').panzoom('zoom', scale, {
         focal: {
@@ -118,13 +135,21 @@ initPanZoom = function() {
     var delta = e.delta || e.originalEvent.wheelDelta;
     var zoomOut = delta ? delta < 0 : e.originalEvent.deltaY > 0;
     $panzoom.panzoom('zoom', zoomOut, {
-      increment: 0.2,
+      increment: 0.1,
       animate: false,
       minScale: 0.07,
       maxScale: 5,
+      startTransform: 'scale(0.5)',
       focal: e
     });
   });
+
+
+//$('.panzoom').panzoom('zoom', 0.7 );
+
+
+
+
 }
 
 createRandomPins = function(n) {
@@ -303,8 +328,9 @@ getPins = function(session) {
 
   });
 
-/* Pagination
 
+// pagination
+/*
   var pins = [];
   var counter = 0;
   PDK.request('/me/pins/', {
