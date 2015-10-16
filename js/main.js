@@ -7,9 +7,12 @@ window.onload = function() {
   initPinterestSDK();
   initPanZoom();
   boardLinks();
+  centerFrame();
 
 
 }
+
+
 
 boardLinks = function() {
   $('#boardSelect').on('change', function() {
@@ -53,6 +56,60 @@ initIsotope = function () {
 
 }
 
+
+
+centerFrame = function() {
+
+var $body = $('.container');
+$body.on('mousedown', function (evt) {
+  $body.on('mouseup mousemove', '.item', function handler(evt) {
+    if (evt.type === 'mouseup') {
+      // click
+      console.log('click');
+
+      $('.panzoom').panzoom('zoom', 1);
+      var yOffset = $( window ).height() / 2;
+      var xOffset = $( window ).width() / 2 ;
+      var top = $(this).position().top;
+      var left = $(this).position().left;
+
+      var height = $(this).height();
+      var width = $(this).width();
+      var x = - left + xOffset - width/2;
+      var y = - top + yOffset - height/2;
+
+      $('.panzoom').panzoom('pan', x, y );
+   //   $('.panzoom').panzoom('zoom');
+
+      var scale = 0.9 * $( window ).height() / height;
+
+      $('.panzoom').panzoom('zoom', scale, {
+        focal: {
+          clientX: xOffset,
+          clientY: yOffset
+        }
+      });
+
+    } else {
+      // drag
+      console.log('drag');
+    }
+    $body.off('mouseup mousemove', handler);
+  });
+});
+
+/*
+  $('.container').on('mouseup', '.item', function() {
+
+
+
+
+
+  });
+*/
+
+}
+
 initPanZoom = function() {
   var $section = $('#focal');
   var $panzoom = $section.find('.panzoom').panzoom();
@@ -61,7 +118,7 @@ initPanZoom = function() {
     var delta = e.delta || e.originalEvent.wheelDelta;
     var zoomOut = delta ? delta < 0 : e.originalEvent.deltaY > 0;
     $panzoom.panzoom('zoom', zoomOut, {
-      increment: 0.05,
+      increment: 0.2,
       animate: false,
       minScale: 0.07,
       maxScale: 5,
@@ -91,6 +148,8 @@ addPins = function(pins) {
       var board = pins[i].board.id;
       var div = $('<img class="item ' + board + '"></img>');
       div[0].src = url;
+      div.css('background', pins[i].color);
+
 
       $('.container').append(div);
     }
