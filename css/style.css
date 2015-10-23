@@ -21,11 +21,11 @@ body {
 .container {
   margin: 0 auto;
   background: #111;
-  width: 20000px !important;
-  height: 20000px !important;
+  width: 40000px !important;
+  height: 40000px !important;
   position: relative;
-  left: -10000px;
-  top: -10000px;
+  left: -20000px;
+  top: -20000px;
 }
 
 .item {

@@ -9,10 +9,12 @@ window.onload = function() {
        gutter: 0,
       itemSelector: '.item',
       centered: {
-       x: 10000,
-       y: 10000
+       x: 20000,
+       y: 20000
       }
     });
+
+    var image_array = [];
 /*
   $center-out1.find('.item').each( function( i, itemElem ) {
     // make element draggable with Draggabilly
@@ -80,28 +82,85 @@ window.onload = function() {
       }
 
       function getImages(url, n) {
-        if ((url != "" || url != null) && n < 4) {
+
+        if ((url != "" || url != null) && n < 12) {
           $.get(url, function(data) {
             console.log(data);
 
+
             for (var i = 0; i < data.data.length; i++) {
               var pin_url = data.data[i].image.original.url;
-              var item = document.createElement('img');
-              item.className = 'item';
+
+
+              var item2 = document.createElement('img');
+              item2.className = 'item2';
               var url = pin_url;
-              item.src = url;
+              item2.src = url;
+              image_array.push(item2);
+            // $("#hidden-images").appendChild( item2 );
+
+
+              var item = document.createElement('canvas');
+              item.className = 'item';
               item.style.background = data.data[i].color;
+              var cv = item;
+              var ctx = cv.getContext('2d');
+              var w = data.data[i].image.original.width;
+              var h = data.data[i].image.original.height;
+              var p = w / 20;
+              var q = h / 20;
+
+              cv.width = p;
+              cv.height = q;
+              cv.style.width = w + "px";
+              cv.style.height = h = "px";
+
               container.appendChild( item );
               pckry.appended( item );
 
             }
+
+            console.log(image_array);
             n++;
             getImages(data.page.next, n);
 
 
           });
         } else {
+
+          console.log(image_array);
+          imagesLoaded( image_array, function() {
+
+            for (var i = 0; i < image_array.length; i++) {
+
+              var p = $('.container').children()[i].width;
+              var q = $('.container').children()[i].height;
+              var cv = $('.container').children()[i];
+              var ctx = cv.getContext('2d');
+              ctx.drawImage(image_array[i], 0, 0, p, q);
+              console.log(i);
+             // ctx.drawImage(item2, 0, 0, p, q);
+             // console.log(item2);
+
+
+    /*
+              var item = document.createElement('img');
+              item.className = 'item';
+              var url = pin_url;
+              item.src = url;
+              item.style.background = data.data[i].color;
+*/
+
+
+            }
+
+          });
+
           pckry.layout();
+
+
+
+
         }
       }
 
