@@ -1,5 +1,12 @@
 var timer = 0;
+
+
+
 window.onload = function() {
+
+  setTimeout(function() {
+    renderer.render(outerContainer);
+  }, 3000);
 
   ( function() {
     var container = document.querySelector('#center-out1');
@@ -14,6 +21,11 @@ window.onload = function() {
       }
     });
 
+
+
+
+    
+
     var image_array = [];
 /*
   $center-out1.find('.item').each( function( i, itemElem ) {
@@ -24,7 +36,7 @@ window.onload = function() {
   });
 */
 
-    console.log();
+  
 
     eventie.bind( container, 'click', function(){
       //pckry.packer.center.x = 15000;
@@ -38,7 +50,7 @@ window.onload = function() {
       }
       var x = $(elem).context.style.left;
       var y = $(elem).context.style.top;
-      console.log();
+
    //   pckry.fit( elem, x, y )
       //pckry.layoutItems( elem, true );
       //pckry.remove( elem );
@@ -58,7 +70,7 @@ window.onload = function() {
 
 
       var access_token = 'xxx';
-      console.log('ready');
+
 
       var getUrlParameter = function getUrlParameter(sParam) {
           var sPageURL = decodeURIComponent(window.location.search.substring(1)),
@@ -81,11 +93,14 @@ window.onload = function() {
         access_token = data.access_token;
       }
 
+
+
+
+
       function getImages(url, n) {
 
-        if ((url != "" || url != null) && n < 12) {
+        if ((url != "" || url != null) && n < 3) {
           $.get(url, function(data) {
-            console.log(data);
 
 
             for (var i = 0; i < data.data.length; i++) {
@@ -120,7 +135,7 @@ window.onload = function() {
 
             }
 
-            console.log(image_array);
+       
             n++;
             getImages(data.page.next, n);
 
@@ -128,8 +143,28 @@ window.onload = function() {
           });
         } else {
 
-          console.log(image_array);
+  
           imagesLoaded( image_array, function() {
+            console.log('now boy');
+
+          renderer = new PIXI.WebGLRenderer(800, 600);
+
+          // The renderer will create a canvas element for you that you can then insert into the DOM.
+          document.body.appendChild(renderer.view);
+
+          // You need to create a root container that will hold the scene you want to draw.
+          outerContainer = new PIXI.Container();
+          innerContainer = new PIXI.Container();
+          innerContainer.width = 40000;
+          innerContainer.height = 40000;
+         // innerContainer.scale = 2;
+
+          outerContainer.addChild(innerContainer);
+
+ 
+
+
+
 
             for (var i = 0; i < image_array.length; i++) {
 
@@ -138,7 +173,13 @@ window.onload = function() {
               var cv = $('.container').children()[i];
               var ctx = cv.getContext('2d');
               ctx.drawImage(image_array[i], 0, 0, p, q);
-              console.log(i);
+
+
+              var sprite1 = new PIXI.Sprite.fromImage('https://crossorigin.me/' + image_array[i].src);
+              sprite1.position.x = i * 3;
+              sprite1.position.y = i;
+              innerContainer.addChild(sprite1);             
+           
              // ctx.drawImage(item2, 0, 0, p, q);
              // console.log(item2);
 
@@ -152,6 +193,10 @@ window.onload = function() {
 */
 
 
+
+
+
+
             }
 
           });
@@ -162,12 +207,14 @@ window.onload = function() {
 
 
         }
+
+
       }
 
       function getBackgrounds(url, n) {
         if ((url != "" || url != null) && n < 4) {
           $.get(url, function(data) {
-            console.log(data);
+   
 
             for (var i = 0; i < data.data.length; i++) {
               var item = document.createElement('div');
@@ -197,9 +244,7 @@ window.onload = function() {
           access_token = data.access_token;
 
           $.get("https://api.pinterest.com/v1/me/?access_token=" + access_token, function(data) {
-            console.log('real data');
-            console.log(data);
-            console.log(data.data.first_name);
+
             $("div.name").html(data.data.first_name);
           });
 
@@ -207,6 +252,13 @@ window.onload = function() {
           var initial_url = "https://api.pinterest.com/v1/me/pins/?access_token=" + access_token + "&fields=id,creator,color,image[original,medium,large,small]";
        //   getImages(initial_url, 0);
           getImages(initial_url, 0);
+
+
+
+
+
+
+
 
 /*
           $.get("https://api.pinterest.com/v1/me/pins/?access_token=" + access_token + "&fields=id,creator,image[original,small]", function(data) {
@@ -226,7 +278,7 @@ window.onload = function() {
             var next_url = data.page.next;
 
 
-
+            
 
 
 
@@ -241,6 +293,9 @@ window.onload = function() {
 
 
 
+
+
+
     function appendItem(topic) {
       (function() {
         var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
@@ -250,7 +305,7 @@ window.onload = function() {
           format: "json",
         })
           .done(function( data ) {
-            console.log(data);
+         
             $.each( data.items, function( i, photo ) {
               //var item = $( "<img src="+item.media.m+"></img>");
               var item = document.createElement('img');
@@ -322,7 +377,7 @@ processData('rose');
         for(var i=0;i<1;i++){
           var r = nouns[Math.floor(nouns.length * Math.random())];
           appendItem(r);
-          console.log(r);
+         
         }
       }
 
